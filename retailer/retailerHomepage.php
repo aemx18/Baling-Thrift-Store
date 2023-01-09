@@ -7,7 +7,7 @@ session_start();
 // Check if the user is logged in, if not then redirect him to login page
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     header("location: loginRetailer.php"); 
-  
+
     
     exit;
 }
@@ -99,7 +99,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               <!-- logo  -->
               <div class="aa-logo">
                 <!-- Text based logo -->
-                <a href="index.html">
+                <a href="retailerHomepage.php">
                   <span class=""></span>
                   <p >Baling <strong>Thrift Store</strong> <span style=" text-transform: lowercase;"><?php echo $_SESSION['retailerEmail']; ?></span></p>
             
