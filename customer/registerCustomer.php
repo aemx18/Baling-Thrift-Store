@@ -1,95 +1,123 @@
 <?php
-// Initialize the session
-session_start();
- 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
-    header("location: customerHomepage.php");
-    exit;
-}
- 
 // Include config file
 require_once "php/config.php";
  
 // Define variables and initialize with empty values
-$custEmail  = $custPass= "";
-$custEmail_err = $custPass_err = $login_error = "";
+$custName =$custEmail  = $custPass = $custAddress = $custPhone ="";
+$custName_err = $custEmail_err = $custPass_err = $custAddress_err = $custPhone_err ="";
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
+
+    // Validate name
+    $input_custName = trim($_POST["custName"]);
+    if(empty($input_custName)){
+        $custName_err = "Please enter your full name.";
+    } else{
+        $custName = $input_custName;
+    }
+
+
+        // Validate Email
+		if (empty($_POST["custEmail"])) {
+			$custEmail_err = "Email is required";
+		  } else {
+			$custEmail = trim($_POST["custEmail"]);
+			// check if e-mail address is well-formed
+			if (!filter_var($custEmail, FILTER_VALIDATE_EMAIL)) {
+			  $custEmail_err = "Invalid email format";
+			} else {
+				// Prepare a select statement
+				$sql = "SELECT custID FROM customer WHERE custEmail = ?";
+				
+				if($stmt = mysqli_prepare($link, $sql)){
+					// Bind variables to the prepared statement as parameters
+					mysqli_stmt_bind_param($stmt, "s", $param_custEmail);
+					
+					// Set parameters
+					$param_custEmail = trim($_POST["custEmail"]);
+					
+					// Attempt to execute the prepared statement
+					if(mysqli_stmt_execute($stmt)){
+						/* store result */
+						mysqli_stmt_store_result($stmt);
+						
+						if(mysqli_stmt_num_rows($stmt) == 1){
+							$custEmail_err = "This email is already taken.";
+						} else{
+							$custEmail = trim($_POST["custEmail"]);
+						}
+					} else{
+						echo "Oops! Something went wrong. Please try again later.";
+					}
+		
+					// Close statement
+					mysqli_stmt_close($stmt);
+				}
+			}
+		  } 
+    
+    // Validate Password
+
+
+    $input_custPass= trim($_POST["custPass"]);
+    if(empty($input_custPass)){
+        $custPass_err = "Please enter your password.";
+    } else{
+        $custPass = $input_custPass;
+    }
+
+
  
+       // Validate Address
+       $input_custAddress= trim($_POST["custAddress"]);
+       if(empty($input_custAddress)){
+           $custAddress_err = "Please enter your address.";
+       } else{
+           $custAddress = $input_custAddress;
+       }
+
+       $input_custPhone= trim($_POST["custPhone"]);
+       if(empty($input_custPhone)){
+           $custPhone_err = "Please enter your Phone Number.";
+       } else{
+           $custPhone= $input_custPhone;
+       }
 
 
-	if (empty($_POST["custEmail"])) {
-        $custEmail_err = "Email is required";
-      } else {
-        $custEmail = trim($_POST["custEmail"]);
-	  }
-        // check if e-mail address is well-formed
-       if (!filter_var($custEmail, FILTER_VALIDATE_EMAIL)) {
-          $custEmail_err = "Invalid email format";
-        } 
-   // Validate Password
+	   var_dump($custName,$custEmail,$custPass,$custAddress,$custPhone);
 
 
-   $input_custPass= trim($_POST["custPass"]);
-   if(empty($input_custPass)){
-	   $custPass_err = "Please enter your password.";
-   } else{
-	   $custPass = $input_custPass;
-   }
-
-
-
-    // Validate credentials
-    if(empty($custEmail_err) && empty($custPass_err)){
-        // Prepare a select statement
-        $sql = "SELECT custID, custEmail, custPass FROM customer WHERE custEmail = ?";
-        
+    // Check input errors before inserting in database
+    if(empty($custName_err) && empty($custEmail_err) && empty($custPass_err)
+    && empty($custAddress_err)&& empty($custPhone_err)){
+        // Prepare an insert statement
+        $sql = "INSERT INTO customer (custName,custEmail, custPass,custAddress,custPhone) VALUES (?, ?, ?, ?, ?)";
+         
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "s", $param_custEmail);
+            mysqli_stmt_bind_param($stmt, "sssss", $param_custName, $param_custEmail,$param_custPass
+             ,$param_custAddress,$param_custPhone);
             
             // Set parameters
-            $param_custEmail = $custEmail;
+          $param_custName = $custName;
+          $param_custEmail =$custEmail;
+          $param_custPass =password_hash($custPass, PASSWORD_DEFAULT);
+          $param_custAddress = $custAddress;
+          $param_custPhone = $custPhone;
             
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
-                // Store result
-                mysqli_stmt_store_result($stmt);
-                
-                // Check if username exists, if yes then verify password
-                if(mysqli_stmt_num_rows($stmt) == 1){                    
-                    // Bind result variables
-                    mysqli_stmt_bind_result($stmt, $custID, $custEmail, $hashed_password);
-                    if(mysqli_stmt_fetch($stmt)){
-                        if(password_verify($custPass, $hashed_password)){
-                            // Password is correct, so start a new session
-                            session_start();
-                            
-                            // Store data in session variables
-                            $_SESSION["loggedin"] = true;
-                            $_SESSION["custID"] = $custID;
-                            $_SESSION["custEmail"] = $custEmail;                            
-                            
-                            // Redirect user to welcome page
-                            header("location: customerHomepage.php");
-                        } else{
-                            // Password is not valid, display a generic error message
-                            $login_error = "Wrong Password.";
-                        }
-                    }
-                } else{
-                    // Username doesn't exist, display a generic error message
-                    $login_error = "Email Not Found";
-                }
+                // Records created successfully. Redirect to landing page
+                header("location: loginCustomer.php");
+                exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
             }
-
-            // Close statement
-            mysqli_stmt_close($stmt);
         }
+         
+        // Close statement
+        mysqli_stmt_close($stmt);
     }
     
     // Close connection
@@ -97,8 +125,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 }
 
 ?>
-
-
+     
 <!DOCTYPE html>
 
 <style>
@@ -162,15 +189,15 @@ a {
 	transition: transform 80ms ease-in;
 }
 
-button:active {
+.inp:active {
 	transform: scale(0.95);
 }
 
-button:focus {
+.inp:focus {
 	outline: none;
 }
 
-button.ghost {
+.inp.ghost {
 	background-color: transparent;
 	border-color: #FFFFFF;
 }
@@ -377,22 +404,27 @@ footer a {
      
       </div>
 
-      <div class="form-container sign-in-container">
+
+ <div class="form-container sign-in-container">
       <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-          <h1>Log In</h1>
+          <h1>Register </h1>
           <div class="social-container">
       
           </div>
-     
+		  <input type="text" id="custEmail"<?php echo (!empty($custName_err)) ? 'is-invalid' : ''; ?> name="custName" value="<?php echo $custName; ?>" placeholder="Customer Name" />
+		  <span class="invalid-feedback"><?php echo $custName_err; ?>
           <input type="text" id="custEmail"<?php echo (!empty($custEmail_err)) ? 'is-invalid' : ''; ?> name="custEmail" value="<?php echo $custEmail; ?>" placeholder="Customer Email" />
 		  <span class="invalid-feedback"><?php echo $custEmail_err; ?>
 		  <input type="password" id="custPass"<?php echo (!empty($custPass_err)) ? 'is-invalid' : ''; ?> name="custPass" value="<?php echo $custPass; ?>" placeholder="Customer Password" />
 		  <span class="invalid-feedback"><?php echo $custPass_err; ?>
-          <a href="#">Forgot your password?</a>
+		  <label>Address:</label> <br>
+		  <textarea type="text" id="custAddress"<?php echo (!empty($custAddress_err)) ? 'is-invalid' : ''; ?> name="custAddress" value="<?php echo $custAddress; ?>" placeholder="Address" > </textarea> <br>
+		  <span class="invalid-feedback"><?php echo $custAddress_err; ?>
+		  <input type="text" id="custPhone"<?php echo (!empty($custPhone_err)) ? 'is-invalid' : ''; ?> name="custPhone" value="<?php echo $custPhone; ?>" placeholder="Customer Phone" />
+		  <span class="invalid-feedback"><?php echo $custPhone_err; ?>
+
+          <input class="inp" type="submit" value= "Register"> <br>
 		  
-          <input class="inp" type="submit" value= "Login"> <br>
-	
-		  <center> <b style="color:black"> <span  class="invalid-feedback"><?php echo $login_error; ?></span> </center> </b>
     
         </form>
       </div>
@@ -406,7 +438,7 @@ footer a {
           <div class="overlay-panel overlay-right">
             <h1>Hello, Valued Customer!</h1>
             <p>Enter your personal details and start journey with us</p>
-         <u>  <b> <a class="ghost" href="registerCustomer.php" id="">Register Now!</a></b></u><br>
+          <u> <b> <a class="ghost" href="loginCustomer.php" id="">Has an Account!</a></b></u> <br>
 
 			<div style="border:solid;padding: 7px; ">
 			<a style="color: #eee;" href ="../index.html"> Main Page</a>

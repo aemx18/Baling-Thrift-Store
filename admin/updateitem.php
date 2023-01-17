@@ -82,7 +82,7 @@ if(isset($_POST["itemID"]) && !empty($_POST["itemID"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: item-detail.php?itemID=".$itemID);
+                header("location: item-view-form.php?itemID=".$itemID);
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -198,7 +198,7 @@ if(isset($_POST["itemID"]) && !empty($_POST["itemID"])){
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <input type="text" name="itemDesc" class="form-control <?php echo (!empty($itemDesc_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $itemDesc; ?>">
+                            <textarea type="text" name="itemDesc" class="form-control <?php echo (!empty($itemDesc_err)) ? 'is-invalid' : ''; ?>" rows="4" placeholder="<?php echo $itemDesc; ?>"></textarea>
                             <span class="invalid-feedback"><?php echo $itemDesc_err;?></span>
                         </div>
 
@@ -208,11 +208,22 @@ if(isset($_POST["itemID"]) && !empty($_POST["itemID"])){
                             <span class="invalid-feedback"><?php echo $itemPrice_err;?></span>
                         </div>
                         <input type="hidden" name="itemID" value="<?php echo $itemID; ?>"/>
-                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="submit" class="btn btn-primary" onclick="myFunction()" value="Submit">
                 
                         <br> </br>
                 
                     </form>
+
+                    
+                <script>
+                    var form = document.getElementById('f');
+
+                    function myFunction() {
+
+                    alert("Update Succesful!");
+
+                        }           
+                 </script>
                     
                 </div>
             </div>        

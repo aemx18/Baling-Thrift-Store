@@ -126,12 +126,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                   <br>
                 <a class="btn btn-primary" href="list-bulkItem.php">Back</a>
                     <h2 class="mt-5">Create Item</h2>
-                    <p>Please fill this form and submit to add employee record to the database.</p>
+                    <p>Please fill this form and submit to add new bulk item record to the database.</p>
                     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
                         <div class="form-group">
                             <label>Item ID</label>
                             <input type="text" name="bulkItemID" class="form-control <?php echo (!empty($bulkItemID_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $bulkItemID; ?>">
-                            <span class="invalid-feedback"><?php echo $itemID_err;?></span>
+                            <span class="invalid-feedback"><?php echo $bulkItemID_err;?></span>
                         </div>
                         <div class="form-group">
                             <label>Item Name</label>
@@ -151,7 +151,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <input type="text" name="bulkItemDesc" class="form-control <?php echo (!empty($bulkItemDesc_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $bulkItemDesc; ?>">
+                            <textarea type="text" name="bulkItemDesc" class="form-control <?php echo (!empty($bulkItemDesc_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $bulkItemDesc; ?>"></textarea>
                             <span class="invalid-feedback"><?php echo $bulkItemDesc_err;?></span>
                         </div>
 

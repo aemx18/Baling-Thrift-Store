@@ -1,21 +1,60 @@
-<!DOCTYPE html>
 
 <?php
-// Initialize the session
-session_start();
-
-// Check if the user is logged in, if not then redirect him to login page
-if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: loginAdmin.php"); 
-  
+// Check existence of id parameter before processing further
+if(isset($_GET["bulkItemID"]) && !empty(trim($_GET["bulkItemID"]))){
+    // Include config file
+    require_once "php/config.php";
+    //bulkItemID	bulkItemName	bulkItemGrade	bulkItemPrice	bulkItemQtty	bulkItemDesc	adminID	
     
-    exit;
+    // Prepare a select statement
+    $sql = "SELECT * FROM bulkitem WHERE bulkItemID = ?";
+    
+    if($stmt = mysqli_prepare($link, $sql)){
+        // Bind variables to the prepared statement as parameters
+        mysqli_stmt_bind_param($stmt, "s", $param_id);
+        
+        // Set parameters
+        $param_id = trim($_GET["bulkItemID"]);
+        
+        // Attempt to execute the prepared statement
+        if(mysqli_stmt_execute($stmt)){
+            $result = mysqli_stmt_get_result($stmt);
+    
+            if(mysqli_num_rows($result) == 1){
+                /* Fetch result row as an associative array. Since the result set
+                contains only one row, we don't need to use while loop */
+                $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+                
+                // Retrieve individual field value
+                $bulkItemID = $row["bulkItemID"];
+                $bulkItemName = $row["bulkItemName"];
+                $bulkItemPrice = $row["bulkItemPrice"];
+                $bulkItemQtty = $row["bulkItemQtty"];
+                $bulkItemDesc = $row["bulkItemDesc"];
+            } else{
+                // URL doesn't contain valid id parameter. Redirect to error page
+                header("location: error.php");
+                exit();
+            }
+            
+        } else{
+            echo "Oops! Something went wrong. Please try again later.";
+        }
+    }
+     
+    // Close statement
+    mysqli_stmt_close($stmt);
+    
+    // Close connection
+    mysqli_close($link);
+} else{
+    // URL doesn't contain id parameter. Redirect to error page
+    header("location: error.php");
+    exit();
 }
-
-
-
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -58,13 +97,19 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   
 
   </head>
+  <style>
+    .right {
+
+  right: 0px;
+  width: 300px;
+  border: 3px solid #73AD21;
+    margin-left: auto;
+  margin-right: auto;
+  padding: 15px;
+}</style>
   <body> 
    <!-- wpf loader Two -->
-    <div id="wpf-loader-two">          
-      <div class="wpf-loader-two-inner">
-        <span>Loging In</span>
-      </div>
-    </div> 
+
     <!-- / wpf loader Two -->       
   <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
@@ -94,7 +139,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <!-- start header bottom  -->
     <div class="aa-header-bottom">
-      <div class="container"> 
+      <div class="container">
         <div class="row">
           <div class="col-md-12">
           <a href="index.html"><img style="width:60px;height:60px;" src="img/lgo.png" alt="logo img"></a>
@@ -104,14 +149,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <!-- Text based logo -->
                 <a href="index.html">
                   <span class=""></span>
-                  <p >Baling <strong>Thrift Store</strong> <span>Welcome Admin</span></p>
-            
+                  <p>Baling <strong>Thrift Store</strong> <span>Welcome Admin</span></p>
                 </a>
                 <!-- img based logo -->
                 <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
               </div>
               <!-- / logo  -->
          
+                    
             </div>
           </div>
         </div>
@@ -137,32 +182,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
             <ul class="nav navbar-nav">
-              <li><a href="adminHomepage.php">Home</a></li>
-              <li><a href="list-item.php">Manage Item </a></li>
-              <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
-
-              <li><a href="#">View Sale</a></li>
+            
           
-              <li><a href="list-customer.php">Customer</a></li>
-      
-
-              <li><a href="list-retailer.php"> Retailer </a></li>
-
-        
-              <li><a onclick="myFunction()">Log Out</a></li>
-              <script>
-              function myFunction() {
-
-                        if (confirm("Are You Sure Want to Logout ?") == true) {
-                          window.location.href = ('logout.php');
-
-                        } else {
-                        
-                        }
-                   
-                      }
-                </script>
-
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -170,45 +191,53 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
   </section>
   <!-- / menu -->
-  <style>
-    h1 {
-      text-align: center;
-    }
 
-    .grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #F46C4E;
-  margin: auto;
-  width: fit-content;
-  column-gap: 20px;
-  row-gap: 20px;
-  padding: 10px;
-}
-.grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
   
-  padding: 50px;
-  font-size: 50px;
-  text-align: center;
-}
-  </style>
-  <br>  <br>  <br>
-<section>
+  <!-- Latest Blog -->
+  <section id="aa-latest-blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-latest-blog-area">
+     
+            <div class="row">
+            
+     
+  <div class = right>
+   
+                    <h1 class="">View Record</h1>
+                    <div class="form-group">
+                        <label>Item ID:</label>
+                        <p><b><?php echo $row["bulkItemID"]; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Item Name:</label>
+                        <p><b><?php echo $row["bulkItemName"]; ?></b></p>
+                    </div>
+              
+                    <div class="form-group">
+                        <label>Item Price:</label>
+                        <p><b>RM<?php echo $row["bulkItemPrice"]; ?></b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity:</label>
+                        <p><b><?php echo $row["bulkItemQtty"]; ?> Sacks</b></p>
+                    </div>
+                    <div class="form-group">
+                        <label>Description:</label>
+                        <p><b><?php echo $row["bulkItemDesc"]; ?></b></p>
+                    </div>
+             
+                    <p><a href="list-bulkitem.php" class="btn btn-primary">Back</a></p>
+                    <button onclick="window.print()">Print this page</button>
 
-  <h1>Welcome to Baling Thrift Store (BTS) System Mr. <?php echo $_SESSION['username'] ?></h1>
-  <br> 
-  <div class="grid-container">
-  <div class="grid-item">Item </div>
-  <div class="grid-item">Bulk Item</div>
-  <div class="grid-item">Retailer</div>  
-  <div class="grid-item">Customer</div>  
-</div>
+                    
+  </div>
+  </section>
+  <!-- / Latest Blog -->
 
-<br>
-</section>
 
+ 
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

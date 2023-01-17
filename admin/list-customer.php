@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <?php
 // Initialize the session
 session_start();
@@ -11,11 +10,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     
     exit;
 }
-
-
-
 ?>
-
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -58,13 +53,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   
 
   </head>
+
   <body> 
    <!-- wpf loader Two -->
-    <div id="wpf-loader-two">          
-      <div class="wpf-loader-two-inner">
-        <span>Loging In</span>
-      </div>
-    </div> 
+
     <!-- / wpf loader Two -->       
   <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
@@ -94,7 +86,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <!-- start header bottom  -->
     <div class="aa-header-bottom">
-      <div class="container"> 
+      <div class="container">
         <div class="row">
           <div class="col-md-12">
           <a href="index.html"><img style="width:60px;height:60px;" src="img/lgo.png" alt="logo img"></a>
@@ -104,14 +96,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                 <!-- Text based logo -->
                 <a href="index.html">
                   <span class=""></span>
-                  <p >Baling <strong>Thrift Store</strong> <span>Welcome Admin</span></p>
-            
+                  <p>Baling <strong>Thrift Store</strong> <span>Welcome Admin</span></p>
                 </a>
                 <!-- img based logo -->
                 <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
               </div>
               <!-- / logo  -->
          
+                    
             </div>
           </div>
         </div>
@@ -137,7 +129,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
             <ul class="nav navbar-nav">
-              <li><a href="adminHomepage.php">Home</a></li>
+            <li><a href="adminHomepage.php">Home</a></li>
               <li><a href="list-item.php">Manage Item </a></li>
               <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
 
@@ -162,7 +154,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                    
                       }
                 </script>
-
+        
+          
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -170,45 +163,127 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
   </section>
   <!-- / menu -->
-  <style>
-    h1 {
-      text-align: center;
-    }
 
-    .grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #F46C4E;
-  margin: auto;
-  width: fit-content;
-  column-gap: 20px;
-  row-gap: 20px;
-  padding: 10px;
-}
-.grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
   
-  padding: 50px;
-  font-size: 50px;
-  text-align: center;
-}
-  </style>
-  <br>  <br>  <br>
-<section>
+  <!-- Latest Blog -->
+  <section id="aa-latest-blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-latest-blog-area">
+     
+            <div class="row">
+            
+     
+    <div class="main-block">
+   
+    
 
-  <h1>Welcome to Baling Thrift Store (BTS) System Mr. <?php echo $_SESSION['username'] ?></h1>
-  <br> 
-  <div class="grid-container">
-  <div class="grid-item">Item </div>
-  <div class="grid-item">Bulk Item</div>
-  <div class="grid-item">Retailer</div>  
-  <div class="grid-item">Customer</div>  
-</div>
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mt-5 mb-3 clearfix">
+                        <h2 class="pull-left">List of Customers</h2>
+                  
+                    </div>
+                    <?php
+                    // Include config file
+                    require_once "php/config.php";
+                    
+                    // Attempt select query execution
+                    $sql = "SELECT  custID,custName, custEmail, custPhone from customer";
+           
+                    if($result = mysqli_query($link, $sql)){
+                        if(mysqli_num_rows($result) > 0){
+                            echo '<table class="table table-bordered table-striped">';
+                                echo "<thead>";
+                                    echo "<tr>";
+                                        echo "<th>Customer ID</th>";
+                                        echo "<th>Customer Name</th>";
+                                        echo "<th>Customer Email</th>";
+                                        echo "<th>Customer Phone</th>";
+                                        echo "<th>Action</th>";
+                                    echo "</tr>";
+                                echo "</thead>";
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                    echo "<tr>";
+                                        echo "<td>" . $row['custID'] . "</td>";
+                                        echo "<td>" . $row['custName'] . "</td>";
+                                        echo "<td>" . $row['custEmail'] ."</td>";
+                                        echo "<td>" . $row['custPhone'] ."</td>";
+                                        echo "<td>";
+                                            echo '<a href="customer-detail.php?custID='. $row['custID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="delete-customer.php?custID='. $row['custID'] .'" title="Delete Record" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
+                                        echo "</td>";
+                                    echo "</tr>";
+                                }
+                                echo "</tbody>";                            
+                            echo "</table>";
+                            // Free result set
+                            mysqli_free_result($result);
+                        } else{
+                            echo '<div class="alert alert-danger"><em>No records were found.</em></div>';
+                        }
+                    } else{
+                        echo "Oops! Something went wrong. Please try again later.";
+                    }
+ 
+                    // Close connection
+                    mysqli_close($link);
+                    ?>
+                </div>
+            </div>        
+        </div>
+    </div>
+    </div>
+            </div>
+          </div>
+        </div>    
+      </div>
+    </div>
+  </section>
+  <!-- / Latest Blog -->
 
-<br>
-</section>
 
+  <!-- Subscribe section -->
+  <section id="aa-subscribe">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+     
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- / Subscribe section -->
+
+
+
+  <!-- Login Modal -->  
+  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">                      
+        <div class="modal-body">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4>Login or Register</h4>
+          <form class="aa-login-form" action="">
+            <label for="">Username or Email address<span>*</span></label>
+            <input type="text" placeholder="Username or email">
+            <label for="">Password<span>*</span></label>
+            <input type="password" placeholder="Password">
+            <button class="aa-browse-btn" type="submit">Login</button>
+            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
+            <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
+            <div class="aa-register-now">
+              Don't have an account?<a href="account.html">Register now!</a>
+            </div>
+          </form>
+        </div>                        
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>    
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

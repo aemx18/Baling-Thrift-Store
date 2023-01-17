@@ -132,39 +132,30 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <!-- Left nav -->
             <ul class="nav navbar-nav">
             <li><a href="adminHomepage.php">Home</a></li>
-            <li><a href="list-item.php">Manage Item </a></li>
-            <li><a href="list-bulkItem.php">Manage Bulk Item</a></li>
+              <li><a href="list-item.php">Manage Item </a></li>
+              <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
 
               <li><a href="#">View Sale</a></li>
           
-           
-             <li><a href="#">Order <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="#">View Bulk & Approve</a></li>
-                    <li><a href="#">View Ccustomer Order </a></li>   
-                  <li><a href="#">View Ccustomer Order </a></li>             
-                </ul>
-              </li>
+              <li><a href="list-customer.php">Customer</a></li>
+      
 
-                 
-             <li><a href="#"> Retailer <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="#">Register Retailer</a></li>
-                  <li><a href="#">Edit Retailer </a></li>      
-                  <li><a href="#">Delete Retailer</a></li>
-                  <li><a href="#">View Retailer </a></li>            
-                </ul>
-              </li>
+              <li><a href="list-retailer.php"> Retailer </a></li>
 
-                       
-             <li><a href="#"> Customer <span class="caret"></span></a>
-                <ul class="dropdown-menu">                
-                  <li><a href="#">Delete Customer</a></li>
-                  <li><a href="#">View Customer </a></li>             
-                </ul>
-              </li>
         
-              <li><a href="logout.php">Log Out</a></li>
+              <li><a onclick="myFunction()">Log Out</a></li>
+              <script>
+              function myFunction() {
+
+                        if (confirm("Are You Sure Want to Logout ?") == true) {
+                          window.location.href = ('logout.php');
+
+                        } else {
+                        
+                        }
+                   
+                      }
+                </script>
           
             </ul>
           </div><!--/.nav-collapse -->
@@ -221,7 +212,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<td>" . $row['bulkItemPrice'] . "</td>";
                                         echo "<td>" . $row['bulkItemQtty'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="bulkitem-detail.php?bulkItemID='. $row['bulkItemID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="bulkitem-view-form.php?bulkItemID='. $row['bulkItemID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
                                             echo '<a href="updatebulkitem.php?bulkItemID='. $row['bulkItemID'] .'" class="mr-3" title="Update Record" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
                                             echo '<a href="deletebulkItem.php?bulkItemID='. $row['bulkItemID'] .'" title="Delete Record" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";

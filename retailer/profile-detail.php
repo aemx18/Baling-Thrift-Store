@@ -2,12 +2,15 @@
 <?php
 
 session_start();
+require_once "php/config.php";
 
 // Check existence of id parameter before processing further
-if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
+if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+
     // Include config file
-    require_once "php/config.php";
-  isset(S_SESSION['retailerName']);
+
+
+
     
 }
 
@@ -62,8 +65,8 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
    .bingkai {
     border-style: double;
     padding: 5px;
-    height: 100x;
-    width: 500px;
+    height: 80px;
+    width: 700px;
 
   };
   
@@ -109,9 +112,10 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
               <!-- logo  -->
               <div class="aa-logo">
                 <!-- Text based logo -->
-                <a href="index.html">
+                <a href="retailerHomepage.php">
                   <span class=""></span>
-                  <p>Baling <strong>Thrift Store</strong> <span>Welcome Admin</span></p>
+                  <p >Baling <strong>Thrift Store</strong> <span style=" text-transform: lowercase;"><?php echo $_SESSION['retailerEmail']; ?></span></p>
+            
                 </a>
                 <!-- img based logo -->
                 <!-- <a href="index.html"><img src="img/logo.jpg" alt="logo img"></a> -->
@@ -179,8 +183,19 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 class="mt-5 mb-3">View Record</h1>
-                    
+                    <h1 class="mt-5 mb-3">View Profile</h1>
+                    <?php
+                    $currentRetailer = $_SESSION['retailerEmail'];
+    $sql = "SELECT * FROM retailer WHERE retailerEmail ='$currentRetailer'";
+
+  $result =   mysqli_query($link,$sql );
+  if($result){
+    if(mysqli_num_rows($result)>0){
+      while($row = mysqli_fetch_array($result)){
+        
+        //print_r($row);
+  ?>
+
                     <div class="form-group">
                 
                     <div class="form-group">
@@ -219,8 +234,13 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
                         <p><b><?php echo $row["created_by"]; ?></b></p>
                     </div>
                     </div>
-                    <p><a href="list-retailer.php" class="btn btn-primary">Back</a></p>
+                    <p><a href="retailerHomepage.php" class="btn btn-primary">Back</a></p>
                </div>
+               <?php 
+                  }
+                }
+              }
+               ?>
             </div>        
         </div>
     </div>
@@ -235,136 +255,6 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
   </section>
   <!-- / Latest Blog -->
 
-
-  <!-- Subscribe section -->
-  <section id="aa-subscribe">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12">
-     
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- / Subscribe section -->
-
-  <!-- footer -->  
-  <footer id="aa-footer">
-    <!-- footer bottom -->
-    <div class="aa-footer-top">
-     <div class="container">
-        <div class="row">
-        <div class="col-md-12">
-          <div class="aa-footer-top-area">
-            <div class="row">
-              <div class="col-md-3 col-sm-6">
-                <div class="aa-footer-widget">
-                  <h3>Main Menu</h3>
-                  <ul class="aa-footer-nav">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Our Services</a></li>
-                    <li><a href="#">Our Products</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                  </ul>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="aa-footer-widget">
-                  <div class="aa-footer-widget">
-                    <h3>Knowledge Base</h3>
-                    <ul class="aa-footer-nav">
-                      <li><a href="#">Delivery</a></li>
-                      <li><a href="#">Returns</a></li>
-                      <li><a href="#">Services</a></li>
-                      <li><a href="#">Discount</a></li>
-                      <li><a href="#">Special Offer</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="aa-footer-widget">
-                  <div class="aa-footer-widget">
-                    <h3>Useful Links</h3>
-                    <ul class="aa-footer-nav">
-                      <li><a href="#">Site Map</a></li>
-                      <li><a href="#">Search</a></li>
-                      <li><a href="#">Advanced Search</a></li>
-                      <li><a href="#">Suppliers</a></li>
-                      <li><a href="#">FAQ</a></li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-3 col-sm-6">
-                <div class="aa-footer-widget">
-                  <div class="aa-footer-widget">
-                    <h3>Contact Us</h3>
-                    <address>
-                      <p> 25 Astor Pl, NY 10003, USA</p>
-                      <p><span class="fa fa-phone"></span>+1 212-982-4589</p>
-                      <p><span class="fa fa-envelope"></span>dailyshop@gmail.com</p>
-                    </address>
-                    <div class="aa-footer-social">
-                      <a href="#"><span class="fa fa-facebook"></span></a>
-                      <a href="#"><span class="fa fa-twitter"></span></a>
-                      <a href="#"><span class="fa fa-google-plus"></span></a>
-                      <a href="#"><span class="fa fa-youtube"></span></a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-     </div>
-    </div>
-    <!-- footer-bottom -->
-    <div class="aa-footer-bottom">
-      <div class="container">
-        <div class="row">
-        <div class="col-md-12">
-          <div class="aa-footer-bottom-area">
-            <p>Designed by <a href="http://www.markups.io/">MarkUps.io</a></p>
-            <div class="aa-footer-payment">
-              <span class="fa fa-cc-mastercard"></span>
-              <span class="fa fa-cc-visa"></span>
-              <span class="fa fa-paypal"></span>
-              <span class="fa fa-cc-discover"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
-    </div>
-  </footer>
-  <!-- / footer -->
-
-  <!-- Login Modal -->  
-  <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">                      
-        <div class="modal-body">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4>Login or Register</h4>
-          <form class="aa-login-form" action="">
-            <label for="">Username or Email address<span>*</span></label>
-            <input type="text" placeholder="Username or email">
-            <label for="">Password<span>*</span></label>
-            <input type="password" placeholder="Password">
-            <button class="aa-browse-btn" type="submit">Login</button>
-            <label for="rememberme" class="rememberme"><input type="checkbox" id="rememberme"> Remember me </label>
-            <p class="aa-lost-password"><a href="#">Lost your password?</a></p>
-            <div class="aa-register-now">
-              Don't have an account?<a href="account.html">Register now!</a>
-            </div>
-          </form>
-        </div>                        
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div>    
 
   <!-- jQuery library -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>

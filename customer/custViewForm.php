@@ -1,21 +1,23 @@
-<!DOCTYPE html>
 
 <?php
-// Initialize the session
+
 session_start();
+require_once "php/config.php";
 
-// Check if the user is logged in, if not then redirect him to login page
+// Check existence of id parameter before processing further
 if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
-    header("location: loginAdmin.php"); 
-  
-    
-    exit;
-}
 
+    // Include config file
+
+
+
+    
+}
 
 
 ?>
 
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -58,13 +60,21 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
   
 
   </head>
+
+  <style> 
+   .bingkai {
+    border-style: double;
+    padding: 5px;
+    height: 80px;
+    width: 700px;
+
+  };
+  
+</style>
+
   <body> 
    <!-- wpf loader Two -->
-    <div id="wpf-loader-two">          
-      <div class="wpf-loader-two-inner">
-        <span>Loging In</span>
-      </div>
-    </div> 
+
     <!-- / wpf loader Two -->       
   <!-- SCROLL TOP BUTTON -->
     <a class="scrollToTop" href="#"><i class="fa fa-chevron-up"></i></a>
@@ -94,7 +104,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 
     <!-- start header bottom  -->
     <div class="aa-header-bottom">
-      <div class="container"> 
+      <div class="container">
         <div class="row">
           <div class="col-md-12">
           <a href="index.html"><img style="width:60px;height:60px;" src="img/lgo.png" alt="logo img"></a>
@@ -102,9 +112,9 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               <!-- logo  -->
               <div class="aa-logo">
                 <!-- Text based logo -->
-                <a href="index.html">
+                <a href="customerHomepage.php">
                   <span class=""></span>
-                  <p >Baling <strong>Thrift Store</strong> <span>Welcome Admin</span></p>
+                  <p >Baling <strong>Thrift Store</strong> <span style=" text-transform: lowercase;"><?php echo $_SESSION['custEmail']; ?></span></p>
             
                 </a>
                 <!-- img based logo -->
@@ -112,6 +122,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               </div>
               <!-- / logo  -->
          
+                    
             </div>
           </div>
         </div>
@@ -137,32 +148,22 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <div class="navbar-collapse collapse">
             <!-- Left nav -->
             <ul class="nav navbar-nav">
-              <li><a href="adminHomepage.php">Home</a></li>
-              <li><a href="list-item.php">Manage Item </a></li>
-              <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
-
-              <li><a href="#">View Sale</a></li>
-          
-              <li><a href="list-customer.php">Customer</a></li>
-      
-
-              <li><a href="list-retailer.php"> Retailer </a></li>
+            <li><a href="customerHomepage.php">Home</a></li>
+              <li><a href="#">Order </a></li>
+              <li><a href="cart.php" >Cart </a></li>
+              <li><a href="#">Payment </a></li>
+              <li><a href="#">Profile <span class="caret"></span></a>
+                <ul class="dropdown-menu">                
+                  <li><a href="#"> Edit Profile</a></li>
+                  <li><a href="custViewForm.php">View Profile</a></li>
+                       
+                </ul>
+              </li>
 
         
-              <li><a onclick="myFunction()">Log Out</a></li>
-              <script>
-              function myFunction() {
-
-                        if (confirm("Are You Sure Want to Logout ?") == true) {
-                          window.location.href = ('logout.php');
-
-                        } else {
-                        
-                        }
-                   
-                      }
-                </script>
-
+              <li><a href="logout.php">Log Out</a></li>
+          
+          
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -170,44 +171,89 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     </div>
   </section>
   <!-- / menu -->
-  <style>
-    h1 {
-      text-align: center;
-    }
 
-    .grid-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  background-color: #F46C4E;
-  margin: auto;
-  width: fit-content;
-  column-gap: 20px;
-  row-gap: 20px;
-  padding: 10px;
-}
-.grid-item {
-  background-color: rgba(255, 255, 255, 0.8);
-  border: 1px solid rgba(0, 0, 0, 0.8);
   
-  padding: 50px;
-  font-size: 50px;
-  text-align: center;
-}
-  </style>
-  <br>  <br>  <br>
-<section>
+  <!-- Latest Blog -->
+  <section id="aa-latest-blog">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="aa-latest-blog-area">
+     
+            <div class="row">
+            
+     
+    <div class="main-block">
+   
+    <div class="wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="mt-5 mb-3">View Profile</h1>
+                    <?php
+                    $currentCustomer = $_SESSION['custEmail'];
+    $sql = "SELECT custName,custEmail,custAddress,custPhone,created_by FROM customer WHERE custEmail ='$currentCustomer'";
 
-  <h1>Welcome to Baling Thrift Store (BTS) System Mr. <?php echo $_SESSION['username'] ?></h1>
-  <br> 
-  <div class="grid-container">
-  <div class="grid-item">Item </div>
-  <div class="grid-item">Bulk Item</div>
-  <div class="grid-item">Retailer</div>  
-  <div class="grid-item">Customer</div>  
-</div>
+  $result =   mysqli_query($link,$sql );
+  if($result){
+    if(mysqli_num_rows($result)>0){
+      while($row = mysqli_fetch_array($result)){
+        
+        //print_r($row);
+  ?>
 
-<br>
-</section>
+                    <div class="form-group">
+                
+                    <div class="form-group">
+                        <div class="bingkai">
+                        <label>Customer Name:</label>
+                        <p><b><?php echo $row["custName"]; ?></b></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="bingkai">
+                        <label>Customer Email:</label>
+                        <p><b><?php echo $row["custEmail"]; ?></b></p>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                          <div class="bingkai">
+                        <label>Customer Address:</label>
+                        <p><b><?php echo $row["custAddress"]; ?></b></p>
+                          </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="bingkai">
+                        <label>Customer Phone:</label>
+                        <p><b><?php echo $row["custPhone"]; ?></b></p>
+                    </div>
+                    </div>
+                    <div class="form-group">
+                    <div class="bingkai">
+                        <label>Register Time:</label>
+                        <p><b><?php echo $row["created_by"]; ?></b></p>
+                    </div>
+                    </div>
+                    <p><a href="customerHomepage.php" class="btn btn-primary">Back</a></p>
+               </div>
+               <?php 
+                  }
+                }
+              }
+               ?>
+            </div>        
+        </div>
+    </div>
+
+
+    </div>
+            </div>
+          </div>
+        </div>    
+      </div>
+    </div>
+  </section>
+  <!-- / Latest Blog -->
 
 
   <!-- jQuery library -->

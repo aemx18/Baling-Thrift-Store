@@ -27,7 +27,7 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
                 // Retrieve individual field value
                 $retailerName = $row["retailerName"];
                 $retailerEmail = $row["retailerEmail"];
-                $retailerIC = $row["retailerIC"];
+                $retailerIC = $row["showIC"];
                 $retailerAddress = $row["retailerAddress"];
                 $retailerAddress = $row["retailerPhone"];
                 $created_by = $row["created_by"];
@@ -102,8 +102,8 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
    .bingkai {
     border-style: double;
     padding: 5px;
-    height: 100x;
-    width: 500px;
+    height: 80px;
+    width: 700px;
 
   };
   
@@ -260,7 +260,7 @@ if(isset($_GET["retailerID"]) && !empty(trim($_GET["retailerID"]))){
                     </div>
                     <div class="form-group">
                     <div class="bingkai">
-                        <label>retailerIC:</label>
+                        <label>retailer IC:</label>
                         <p><b><?php echo $row["retailerIC"]; ?></b></p>
                     </div>
                     </div>

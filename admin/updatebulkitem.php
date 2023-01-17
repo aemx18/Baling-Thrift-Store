@@ -57,7 +57,7 @@ if(isset($_POST["bulkItemID"]) && !empty($_POST["bulkItemID"])){
          
         if($stmt = mysqli_prepare($link, $sql)){
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt, "ssdiss",  $param_bulkItemName , $param_bulkItemPrice , $param_bulkItemQtty , $param_bulkItemDesc , $param_bulkItemID );
+            mysqli_stmt_bind_param($stmt, "sdiss",  $param_bulkItemName , $param_bulkItemPrice , $param_bulkItemQtty , $param_bulkItemDesc , $param_bulkItemID );
             
             // Set parameters
             $param_bulkItemName = $bulkItemName;
@@ -69,7 +69,7 @@ if(isset($_POST["bulkItemID"]) && !empty($_POST["bulkItemID"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: bulkitem-detail.php?bulkItemID=".$bulkItemID);
+                header("location: bulkitem-view-form.php?bulkItemID=".$bulkItemID);
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -158,7 +158,7 @@ if(isset($_POST["bulkItemID"]) && !empty($_POST["bulkItemID"])){
             
                 <div class="col-md-12">
                     <br> </br>
-                <a class="btn btn-primary" href="list-item.php">Back</a>
+                <a class="btn btn-primary" href="list-bulkitem.php">Back</a>
                     <h2 class="mt-5">Update Record</h2>
                     <p>Please edit the input values and submit to update the item record.</p>
                     <form action="<?php echo htmlspecialchars(basename($_SERVER['REQUEST_URI'])); ?>" method="post">
@@ -180,17 +180,28 @@ if(isset($_POST["bulkItemID"]) && !empty($_POST["bulkItemID"])){
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <input type="text" name="bulkItemDesc" class="form-control <?php echo (!empty($bulkItemDesc_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $bulkItemDesc; ?>">
+                            <textarea type="text" name="bulkItemDesc" class="form-control <?php echo (!empty($bulkItemDesc_err)) ? 'is-invalid' : ''; ?>" rows="4" placeholder="<?php echo $bulkItemDesc; ?>"></textarea>
                             <span class="invalid-feedback"><?php echo $bulkItemDesc_err;?></span>
                         </div>
 
                    
                         <input type="hidden" name="bulkItemID" value="<?php echo $bulkItemID; ?>"/>
-                        <input type="submit" class="btn btn-primary" value="Submit">
+                        <input type="submit" class="btn btn-primary"  onclick="myFunction()"value="Update">
                 
                         <br> </br>
                 
                     </form>
+
+                    
+                <script>
+                  var form = document.getElementById('f');
+
+                  function myFunction() {
+
+                     alert("Update Succesfully!");
+
+                       }           
+                </script>
                     
                 </div>
             </div>        
