@@ -16,6 +16,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
+
     <title>Baling Thrift Store (BTS) System | Home</title>
     
     <!-- Font awesome -->
@@ -133,11 +134,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               <li><a href="list-item.php">Manage Item </a></li>
               <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
 
-              <li><a href="#">View Sale</a></li>
-          
-              <li><a href="list-customer.php">Customer</a></li>
-      
+              <li><a href="#">Order <span class="caret"></span></a>
+                <ul class="dropdown-menu">                
+                  <li><a href="list-order.php"> View Order</a></li>
+                  <li><a href="list-bulk-order.php">View Order Bulk</a></li>
+                       
+                </ul>
+              </li>
 
+              <li><a href="list-customer.php">Customer</a></li>
               <li><a href="list-retailer.php"> Retailer </a></li>
 
         
@@ -181,22 +186,23 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-fit">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Item Details</h2>
-                        <a href="add-item.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Item</a>
+                        <a href="add-item-form.php" class="btn btn-success pull-right"><i class="fa fa-plus" ></i> Add Item</a>
                     </div>
                     <?php
                     // Include config file
                     require_once "php/config.php";
-                    
+            
                     // Attempt select query execution
-                    $sql = "SELECT  itemID,itemName, S, L, M from item";
+                    $sql = "SELECT  itemID,itemName, S, L, M,itemImg from item";
                     if($result = mysqli_query($link, $sql)){
                         if(mysqli_num_rows($result) > 0){
                             echo '<table class="table table-bordered table-striped">';
                                 echo "<thead>";
                                     echo "<tr>";
+                                        echo "<th>Item Image</th>";
                                         echo "<th>Item ID</th>";
                                         echo "<th>Item Name</th>";
                                         echo "<th>Quantity: S</th>";
@@ -208,13 +214,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                 echo "<tbody>";
                                 while($row = mysqli_fetch_array($result)){
                                     echo "<tr>";
-                                        echo "<td>" . $row['itemID'] . "</td>";
+                                    echo "<td>" . '<img src="'.$row['itemImg'].'" style ="width:50px ; height: 50px;" >'. "</td>";
+                                      echo "<td>" . $row['itemID'] . "</td>";
+                    
                                         echo "<td>" . $row['itemName'] . "</td>";
                                         echo "<td>" . $row['S'] ." PCS". "</td>";
                                         echo "<td>" . $row['M'] ." PCS"."</td>";
                                         echo "<td>" . $row['L'] ." PCS". "</td>";
                                         echo "<td>";
-                                            echo '<a href="item-view-form.php?itemID='. $row['itemID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="view-item-form.php?itemID='. $row['itemID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
                                             echo '<a href="updateitem.php?itemID='. $row['itemID'] .'" class="mr-3" title="Update Record" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
                                             echo '<a href="deleteitem.php?itemID='. $row['itemID'] .'" title="Delete Record" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";

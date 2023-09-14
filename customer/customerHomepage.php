@@ -135,13 +135,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <!-- Left nav -->
             <ul class="nav navbar-nav">
               <li><a href="customerHomepage.php">Home</a></li>
-              <li><a href="#">Order </a></li>
+              <li><a href="shop.php">Shop Now! </a></li>
               <li><a href="cart.php" >Cart </a></li>
-              <li><a href="#">Payment </a></li>
+              <li><a href="list-Order.php">Order </a></li>
+              <li><a href="listPayment.php">View Receipt </a></li>
               <li><a href="#">Profile <span class="caret"></span></a>
                 <ul class="dropdown-menu">                
-                  <li><a href="#"> Edit Profile</a></li>
-                  <li><a href="custViewForm.php">View Profile</a></li>
+                  <li><a href="edit-profile-form.php"> Edit Profile</a></li>
+                  <li><a href="cust-view-form.php">View Profile</a></li>
                        
                 </ul>
               </li>
@@ -165,37 +166,37 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/1.jpg" alt="Men slide img" />
+                <img data-seq src="img/slider/s1.jpg" alt="Men slide img" />
               </div>
               <div class="seq-title">
                <span data-seq></span>                
-                <h2 data-seq>Men Collection</h2>                
+                <h2 data-seq>Vintage Collection</h2>                
                 <p data-seq></p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
+                <a data-seq href="shop.php" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
               </div>
             </li>
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/2.jpg" alt="Wristwatch slide img" />
+                <img data-seq src="img/slider/s2.jpg" alt="Wristwatch slide img" />
               </div>
               <div class="seq-title">
                 <span data-seq></span>                
-                <h2 data-seq></h2>                
+                <h2 data-seq>Thrift Lover!</h2>                
                 <p data-seq></p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
+                <a data-seq href="shop.php" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
               </div>
             </li>
             <!-- single slide item -->
             <li>
               <div class="seq-model">
-                <img data-seq src="img/slider/3.jpg" alt="Women Jeans slide img" />
+                <img data-seq src="img/slider/s3.jpg" alt="Women Jeans slide img" />
               </div>
               <div class="seq-title">
                 <span data-seq></span>                
-                <h2 data-seq></h2>                
+                <h2 data-seq>More older more Treasure</h2>                
                 <p data-seq></p>
-                <a data-seq href="#" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
+                <a data-seq href="shop.php" class="aa-shop-now-btn aa-secondary-btn">SHOP NOW</a>
               </div>
             </li>
                          

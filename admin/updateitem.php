@@ -82,7 +82,7 @@ if(isset($_POST["itemID"]) && !empty($_POST["itemID"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: item-view-form.php?itemID=".$itemID);
+                header("location: view-item-form.php?itemID=".$itemID);
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -198,7 +198,7 @@ if(isset($_POST["itemID"]) && !empty($_POST["itemID"])){
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea type="text" name="itemDesc" class="form-control <?php echo (!empty($itemDesc_err)) ? 'is-invalid' : ''; ?>" rows="4" placeholder="<?php echo $itemDesc; ?>"></textarea>
+                            <textarea type="text" name="itemDesc" class="form-control <?php echo (!empty($itemDesc_err)) ? 'is-invalid' : ''; ?>" rows="4" valie="<?php echo $itemDesc; ?>"><?php echo $itemDesc; ?></textarea>
                             <span class="invalid-feedback"><?php echo $itemDesc_err;?></span>
                         </div>
 

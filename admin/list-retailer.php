@@ -133,11 +133,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               <li><a href="list-item.php">Manage Item </a></li>
               <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
 
-              <li><a href="#">View Sale</a></li>
-          
-              <li><a href="list-customer.php">Customer</a></li>
-      
+              <li><a href="#">Order <span class="caret"></span></a>
+                <ul class="dropdown-menu">                
+                  <li><a href="list-order.php"> View Order</a></li>
+                  <li><a href="list-bulk-order.php">View Order Bulk</a></li>
+                       
+                </ul>
+              </li>
 
+              <li><a href="list-customer.php">Customer</a></li>
               <li><a href="list-retailer.php"> Retailer </a></li>
 
         

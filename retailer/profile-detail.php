@@ -23,6 +23,8 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css' />
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css' /> 
     <title>Baling Thrift Store (BTS) System | Home</title>
     
     <!-- Font awesome -->
@@ -149,10 +151,12 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
             <!-- Left nav -->
             <ul class="nav navbar-nav">
             <li><a href="retailerHomepage.php">Home</a></li>
-              <li><a href="#">Order </a></li>
-              <li><a href="#">Cart </a></li>
-              <li><a href="#">Payment </a></li>
-              <li><a href="#">View Profile</span></a></li>
+              <li><a href="shop.php">Shop Now! </a></li>
+              <li><a href="list-bulk-order.php">Order </a></li>
+              <li><a href="cart.php">Cart </a></li>
+              <li><a href="listPayment.php">View Receipt </a></li>
+              <li><a href="profile-detail.php">View Profile</span></a></li>
+
 
         
               <li><a href="logout.php">Log Out</a></li>
@@ -211,10 +215,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                     </div>
                     </div>
                     <div class="form-group">
-                    <div class="bingkai">
-                        <label>retailerIC:</label>
-                        <p><b><?php echo $row["retailerIC"]; ?></b></p>
-                    </div>
+                  
                     </div>
                     <div class="form-group">
                           <div class="bingkai">

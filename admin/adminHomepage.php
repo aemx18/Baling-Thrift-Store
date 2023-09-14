@@ -141,11 +141,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               <li><a href="list-item.php">Manage Item </a></li>
               <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
 
-              <li><a href="#">View Sale</a></li>
-          
-              <li><a href="list-customer.php">Customer</a></li>
-      
+              <li><a href="#">Order <span class="caret"></span></a>
+                <ul class="dropdown-menu">                
+                  <li><a href="list-order.php"> View Order</a></li>
+                  <li><a href="list-bulk-order.php">View Order Bulk</a></li>
+                       
+                </ul>
+              </li>
 
+              <li><a href="list-customer.php">Customer</a></li>
               <li><a href="list-retailer.php"> Retailer </a></li>
 
         
@@ -195,19 +199,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 }
   </style>
   <br>  <br>  <br>
-<section>
 
-  <h1>Welcome to Baling Thrift Store (BTS) System Mr. <?php echo $_SESSION['username'] ?></h1>
-  <br> 
-  <div class="grid-container">
-  <div class="grid-item">Item </div>
-  <div class="grid-item">Bulk Item</div>
-  <div class="grid-item">Retailer</div>  
-  <div class="grid-item">Customer</div>  
-</div>
-
-<br>
-</section>
 
 
   <!-- jQuery library -->

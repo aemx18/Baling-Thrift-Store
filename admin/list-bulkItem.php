@@ -135,11 +135,15 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               <li><a href="list-item.php">Manage Item </a></li>
               <li><a href="list-bulkItem.php">Manage Bulk Item</span></a></li>
 
-              <li><a href="#">View Sale</a></li>
-          
-              <li><a href="list-customer.php">Customer</a></li>
-      
+              <li><a href="#">Order <span class="caret"></span></a>
+                <ul class="dropdown-menu">                
+                  <li><a href="list-order.php"> View Order</a></li>
+                  <li><a href="list-bulk-order.php">View Order Bulk</a></li>
+                       
+                </ul>
+              </li>
 
+              <li><a href="list-customer.php">Customer</a></li>
               <li><a href="list-retailer.php"> Retailer </a></li>
 
         
@@ -180,10 +184,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
     <div class="wrapper">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-auto">
                     <div class="mt-5 mb-3 clearfix">
                         <h2 class="pull-left">Item Bulk Details</h2>
-                        <a href="add-bulkItem.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Bulk Item</a>
+                        <a href="add-bulkitem-form.php" class="btn btn-success pull-right"><i class="fa fa-plus"></i> Add New Bulk Item</a>
                     </div>
                     <?php
                     // Include config file
@@ -196,10 +200,10 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             echo '<table class="table table-bordered table-striped">';
                                 echo "<thead>";
                                     echo "<tr>";
-                                        echo "<th>Item ID</th>";
-                                        echo "<th>Item Name</th>";
-                                        echo "<th>Item Price M</th>";
-                                        echo "<th>Quantity</th>";
+                                        echo "<th>B.Item ID</th>";
+                                        echo "<th>B.Item Name</th>";
+                                        echo "<th>Price per Sack</th>";
+                                        echo "<th>Quantity Sack</th>";
                                         echo "<th>Action</th>";
                                     echo "</tr>";
                                 echo "</thead>";
@@ -212,7 +216,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                                         echo "<td>" . $row['bulkItemPrice'] . "</td>";
                                         echo "<td>" . $row['bulkItemQtty'] . "</td>";
                                         echo "<td>";
-                                            echo '<a href="bulkitem-view-form.php?bulkItemID='. $row['bulkItemID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
+                                            echo '<a href="view-bulkitem-form.php?bulkItemID='. $row['bulkItemID'] .'" class="mr-3" title="View Record" data-toggle="tooltip"><span class="fa fa-eye"></span></a>';
                                             echo '<a href="updatebulkitem.php?bulkItemID='. $row['bulkItemID'] .'" class="mr-3" title="Update Record" data-toggle="tooltip"><span class="fa fa-pencil"></span></a>';
                                             echo '<a href="deletebulkItem.php?bulkItemID='. $row['bulkItemID'] .'" title="Delete Record" data-toggle="tooltip"><span class="fa fa-trash"></span></a>';
                                         echo "</td>";

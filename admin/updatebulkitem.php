@@ -69,7 +69,7 @@ if(isset($_POST["bulkItemID"]) && !empty($_POST["bulkItemID"])){
             // Attempt to execute the prepared statement
             if(mysqli_stmt_execute($stmt)){
                 // Records updated successfully. Redirect to landing page
-                header("location: bulkitem-view-form.php?bulkItemID=".$bulkItemID);
+                header("location: view-bulkitem-form.php?bulkItemID=".$bulkItemID);
                 exit();
             } else{
                 echo "Oops! Something went wrong. Please try again later.";
@@ -180,7 +180,7 @@ if(isset($_POST["bulkItemID"]) && !empty($_POST["bulkItemID"])){
                         </div>
                         <div class="form-group">
                             <label>Description</label>
-                            <textarea type="text" name="bulkItemDesc" class="form-control <?php echo (!empty($bulkItemDesc_err)) ? 'is-invalid' : ''; ?>" rows="4" placeholder="<?php echo $bulkItemDesc; ?>"></textarea>
+                            <textarea type="text" name="bulkItemDesc" class="form-control <?php echo (!empty($bulkItemDesc_err)) ? 'is-invalid' : ''; ?>" rows="4" value="<?php echo $bulkItemDesc; ?>"><?php echo $bulkItemDesc; ?></textarea>
                             <span class="invalid-feedback"><?php echo $bulkItemDesc_err;?></span>
                         </div>
 

@@ -282,14 +282,14 @@ body {
 
   <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
     <div class="user-box">
-      <input type="text" name="retailerEmail" required=""  id="retailerEmail" <?php echo (!empty($retailerEmail_err)) ? 'is-invalid' : ''; ?> value="<?php echo $retailerEmail; ?>">
+      <input type="email" name="retailerEmail" required=""  id="retailerEmail" <?php echo (!empty($retailerEmail_err)) ? 'is-invalid' : ''; ?> value="<?php echo $retailerEmail; ?>">
       <label>Email</label>
-      <span class="invalid-feedback"><?php echo $retailerEmail_err; ?>
+      <span style="color:white" class="invalid-feedback"><?php echo $retailerEmail_err; ?>
     </div>
     <div class="user-box">
-      <input type="password" name="retailerIC" required="" id= "retailerIC"<?php echo (!empty($retailerIC_err)) ? 'is-invalid' : ''; ?> value="<?php echo $retailerIC; ?>">
+      <input type="password" name="retailerIC" required="" maxlength="12" id= "retailerIC"<?php echo (!empty($retailerIC_err)) ? 'is-invalid' : ''; ?> value="<?php echo $retailerIC; ?>">
       <label>Password</label>
-      <span class="invalid-feedback"><?php echo $retailerIC_err; ?>
+      <span style="color:white" class="invalid-feedback"><?php echo $retailerIC_err; ?>
     </div>
    
     <input type="submit" value= "Login"> <br>
